@@ -1,49 +1,44 @@
 #pragma once
 #include <iostream>
-#include <string>
 
 namespace ywchoi2649052
 {
     class student
     {
-        std::string name{};
         int id{};
         int score{};
         char grade{};
         void testId()
         {
-            if (id < 1000000 || id > 9999999)
+            if (id<1000000 || id>9999999)
             {
-                std::cout << "Invalid id";
+                std::cout << "Invalid id\n";
                 std::exit(1);
-            }
+            }    
         }
         void testScore()
         {
-            if (score < 0 || score > 100)
+            if(score<0 || score>100)
             {
-                std::cout << "Invalid score";
+                std::cout << "Invalid score\n";
                 std::exit(1);
-            }
+            }    
         }
         void testGrade()
         {
-            if (grade < 'A' || grade > 'F')
+            if(grade<'A' || grade>'F')
             {
-                std::cout << "Invalid grade";
+                std::cout << "Invalid grade\n";
                 std::exit(1);
             }
         }
-
     public:
-        student(std::string n = "no name yet", int d = 1234567, int s = 100, char g = 'A')
-            :name{n}, id{d}, score{s}, grade{g}
+        student(int d = 1234567, int s = 100, char g = 'A')
+        :id{d}, score{s}, grade{g}
         {testId(); testScore(); testGrade();}
 
         void input()
         {
-            std::cout << "Enter name: ";
-            std::getline(std::cin >> std::ws, name);
             std::cout << "Enter id: ";
             std::cin >> id; testId();
             std::cout << "Enter score: ";
@@ -52,37 +47,34 @@ namespace ywchoi2649052
             std::cin >> grade; testGrade();
         }
 
-        void setName(std::string n){name = n;}
         void setId(int d){id = d; testId();}
         void setScore(int s){score = s; testScore();}
-        void setGrade(char g){grade = g; testGrade();}
+        void setGrade(char g){grade = g, testGrade();}
 
-        void print() const
+        void print() const 
         {
-            std::cout << name << ", " << id << ", " << score << ", " << grade << std::endl;
+            std::cout << id << ", " << score << ", " << grade;
         }
 
-        std::string getName() const {return name;}
         int getId() const {return id;}
         int getScore() const {return score;}
         char getGrade() const {return grade;}
 
         student operator++()
         {
-            return student{name, id, ++score, grade};
+            return student{id, ++score, grade};
         }
 
         student operator++(int)
         {
-            student temp{name, id, score, grade};
+            student temp{id, score, grade};
             score++;
             return temp;
         }
 
-        friend std::istream& operator>>(std::istream& is, student& s)
+        friend std::istream& operator>>(std::istream& is, student& s) 
         {
-            std::cout << "Enter name: ";
-            std::getline(is >> std::ws, s.name);            std::cout << "Enter id: ";
+            std::cout << "Enter id: ";
             is >> s.id;
             std::cout << "Enter score: ";
             is >> s.score;
@@ -93,19 +85,16 @@ namespace ywchoi2649052
 
         friend std::ostream& operator<<(std::ostream& os, const student& s)
         {
-            os << s.name << ", " << s.id << ", " << s.score << ", " << s.grade << std::endl;
+            os << s.id << ", " << s.score << ", " << s.grade << std::endl;
             return os;
         }
 
-        friend bool operator==(student& s1, student& s2)
+        friend bool operator==(const student& s1, const student& s2)
         {
-            return s1.id == s2.id;
+            return s1.id == s2.id && s1.score == s2.score && s1.grade == s2.grade;
         }
 
-        friend int operator+(student& s1, student& s2)
-        {
-            return s1.score + s2.score;
-        }
+        friend int operator+(const student& s1, const student& s2)
+        {return s1.score + s2.score;}
     };
-
 }
